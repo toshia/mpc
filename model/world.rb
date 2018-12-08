@@ -31,6 +31,14 @@ module Plugin::Mpc
       Diva::URI(port == 6600 ? "mpd://#{host}/" : "mpd://#{host}:#{port}/")
     end
 
+    # このWorldが再生中の楽曲を取得するDeferredを返す
+    def playing_song
+      request('currentsong').next do |res|
+        Plugin::Mpc::Song.parse(res)
+      end
+    end
+
+    # 直接呼んだらあかん
     def request(body)
       connection do |c|
         c.puts(body.strip)

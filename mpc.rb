@@ -19,6 +19,12 @@ Plugin.create(:mpc) do
     }
   end
 
+  defspell(:playing_song, :mpc,
+           condition: ->(mpc){ true }
+          ) do |mpc|
+    mpc.playing_song
+  end
+
   world_setting(:mpc, 'MPC') do
     self[:host] = 'localhost'
     self[:port] = 6600
