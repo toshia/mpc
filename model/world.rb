@@ -45,10 +45,12 @@ module Plugin::Mpc
       end
     end
 
+    # 直接呼んだらあかん
     def connection(&block)
       Delayer::Deferred.next {
         TCPSocket.open(host, port)
       }.next{ |conn|
+        conn.set_encoding('utf-8')
         conn.each_line.find{|l| l.start_with?('OK') }
         Delayer::Deferred.next{
           block.(conn)
