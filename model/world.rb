@@ -31,6 +31,37 @@ module Plugin::Mpc
       Diva::URI(port == 6600 ? "mpd://#{host}/" : "mpd://#{host}:#{port}/")
     end
 
+    def request(body)
+      connection do |c|
+        c.puts(body.strip)
+        res = []
+        c.each_line.lazy.map(&:chomp).each do |l|
+          case l
+          when 'OK'   then break res.join("\n")
+          when /^ACK/ then Delayer::Deferred.fail(l)
+          else             res << l
+          end
+        end
+      end
+    end
+
+    def connection(&block)
+      Delayer::Deferred.next {
+        TCPSocket.open(host, port)
+      }.next{ |conn|
+        conn.each_line.find{|l| l.start_with?('OK') }
+        Delayer::Deferred.next{
+          block.(conn)
+        }.next{ |result|
+          conn.close
+          result
+        }.trap{ |err|
+          conn.close
+          Delayer::Deferred.fail(err)
+        }
+      }
+    end
+
     # MPDサーバにつないだ時に返ってくるバージョン情報文字列を返す。
     # "MPD 0.19.0" みたいな感じで
     def server_info
