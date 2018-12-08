@@ -25,6 +25,23 @@ Plugin.create(:mpc) do
     mpc.playing_song
   end
 
+
+  command(:mpc_post_current_song,
+          name: 'MPDで再生中の楽曲のタイトルを貼り付け',
+          condition: ->opt{
+            world, = Plugin.filtering(:world_current, nil)
+            playing_song?(world)
+          },
+          visible: true,
+          role: :postbox) do |opt|
+    world, = Plugin.filtering(:world_current, nil)
+    playing_song(world).next do |song|
+      postbox = Plugin::GUI::Postbox.instance
+      postbox.options = {footer: "Now Playing #{song.title}", delegate_other: false}
+      Plugin::GUI::Window.instance(:default) << postbox
+    end
+  end
+
   world_setting(:mpc, 'MPC') do
     self[:host] = 'localhost'
     self[:port] = 6600
