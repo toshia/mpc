@@ -5,9 +5,9 @@ require_relative 'model/song'
 
 Plugin.create(:mpc) do
   defspell(:compose, :mpc,
-           condition: ->(mpc, **){
+           condition: ->(mpc){
              true
-           }) do |mpc, body: nil, **|
+           }) do |mpc, body: nil|
     mpc.request(body).next { |x|
       notice x
       activity :system, x
