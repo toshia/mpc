@@ -1,0 +1,43 @@
+= mikutter MPC Plugin
+
+== 何これ
+
+mikutterでMPD(Music Player Daemon)をコントロールするプラグインです。
+
+== インストール方法
+
+[source,sh]
+----
+mkdir -p ~/.mikutter/plugin/; git clone https://github.com/toshia/mpc.git ~/.mikutter/plugin/mpc
+----
+
+== MPDとは？
+
+音楽プレイヤーの選択肢のひとつで、音楽を再生するサーバに対してUIなどを提供するクライアントが接続して制御します。サーバはlocalhostでも構いませんし、スピーカーさえついていれば別のマシンでも構いません。
+
+クライアントにはコマンドラインインターフェースやリッチなデスクトップアプリケーション、スマートフォンアプリなどの選択肢があり、好きなクライアントをその時々に応じて使い分けます。
+
+このプラグインはその新たな選択肢としてmikutterを提案するものです。
+
+参考: link:http://toshi-a.hatenablog.com/entry/mpd[Raspberry PiにMPDサーバを構築するAnsible Playbookを公開した - ぁ]
+
+== できること・つかいかた
+
+=== 複数のMPDホストを登録する
+
+MPDをアカウントとして利用できるようになります。
+アカウントスイッチャの「アカウントを追加」にある「MPC」を選択し、MPDホスト情報を入力するとアカウントとして追加できます。
+
+=== MPDで再生中の楽曲名をはりつけたPostboxを作る(Now Playing)
+
+現在のアカウントをMPDにした状態だと、Postboxを右クリックした時に表示されるコンテキストメニューに「MPDで再生中の楽曲名を貼り付け」が表示されます。
+
+そのMPDで再生中の楽曲名が入った状態のPostboxが新規作成されます。内容を編集後、投稿したいWorldに切り替えてから投稿することで、任意のWorldに現在再生している楽曲の名前を投稿できます。
+
+=== Postboxに書いたMPDプロトコルの命令をMPDに送る
+
+MPDとクライアントは単純なテキストプロトコルで通信します。
+
+現在のアカウントをMPDにしてPostboxに投稿すると、MPDに直接命令を送れます。
+
+MPDプロトコルについては、（link:https://www.musicpd.org/doc/html/protocol.html[公式ドキュメント]）を参照してください。
