@@ -1,0 +1,13 @@
+---
+slug: :mpc
+depends:
+  mikutter: 3.8.3
+  plugin:
+  - gui
+  - spell
+  - world
+version: '1.0'
+author: toshi_a
+name: MPC
+description: >-
+  mikutterでMPD(Music Player Daemon)をコントロールするプラグインです。
